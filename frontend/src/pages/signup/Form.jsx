@@ -1,17 +1,18 @@
 import { useState } from "react";
 import Input from "./Input";
 import Button from "../../Components/Button";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
   const [name, setName] = useState({ value: "", error: "" });
   const [username, setUsername] = useState({ value: "", error: "" });
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("handle submit");
 
     const usernameRegex = /^[a-zA-Z0-9_.-]$/;
     const emailRegex = /[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/;
@@ -40,15 +41,24 @@ const Form = () => {
         error: "Password must contain at least 8 characters",
       });
     }
+
+    if (
+      name.error === "" &&
+      username.error === "" &&
+      email.error === "" &&
+      password.error === ""
+    ) {
+      navigate("/get-started", {
+        name: name.value,
+        username: username.value,
+        email: email.value,
+        password: password.value,
+      });
+    }
   };
 
   return (
-    <form
-      action="/signup"
-      method="POST"
-      className="flex flex-col gap-2"
-      onSubmit={handleSubmit}
-    >
+    <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
       <div className="flex gap-2">
         <Input
           label="Name"
@@ -83,12 +93,6 @@ const Form = () => {
         value={password.value}
         onChange={(e) => setPassword({ ...password, value: e.target.value })}
       />
-      {/* <button
-        type="submit"
-        className="self-start bg-pink-400 text-white font-bold px-8 py-2 rounded-md"
-      >
-        Create Account
-      </button> */}
       <Button text="Create Account" type="submit" className="self-start" />
     </form>
   );
