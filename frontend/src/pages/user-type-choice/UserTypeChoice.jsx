@@ -4,12 +4,13 @@ import Explore from "../../assets/explore.png";
 import Hire from "../../assets/hire.png";
 import Share from "../../assets/share.png";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const { VITE_BACKEND_URL, VITE_CLOUDINARY_CLOUD, VITE_CLOUDINARY_API_KEY } =
   import.meta.env;
 
 const UserTypeChoice = () => {
+  const navigate = useNavigate();
   const [isDesigner, setIsDesigner] = useState(false);
   const [isRecruiter, setIsRecruiter] = useState(false);
   const [isExplorer, setIsExplorer] = useState(false);
@@ -97,7 +98,9 @@ const UserTypeChoice = () => {
       }
     };
 
-    signUpRequest();
+    signUpRequest().then(() => {
+      navigate("/confirm-email", { state: { email } });
+    });
   };
 
   return (
