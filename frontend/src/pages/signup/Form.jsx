@@ -49,10 +49,12 @@ const Form = () => {
       password.error === ""
     ) {
       navigate("/get-started", {
-        name: name.value,
-        username: username.value,
-        email: email.value,
-        password: password.value,
+        state: {
+          name: name.value,
+          username: username.value,
+          email: email.value,
+          password: password.value,
+        },
       });
     }
   };

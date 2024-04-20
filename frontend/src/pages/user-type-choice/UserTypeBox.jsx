@@ -30,7 +30,7 @@ const UserTypeBox = ({ text, image, name, value, onChange }) => {
       >
         {checked && <Check />}
       </span>
-      <input type="checkbox" name={name} value={value} checked={checked} className="hidden" />
+      <input type="checkbox" name={name} value={value} checked={checked} readOnly className="hidden" />
     </label>
   );
 };

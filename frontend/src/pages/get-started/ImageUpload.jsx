@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Camera, ChevronRight } from "react-feather";
 
-const ImageUpload = () => {
+const ImageUpload = ({onImageChange}) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -18,6 +18,7 @@ const ImageUpload = () => {
       console.error("Invalid image");
     };
     img.src = URL.createObjectURL(file);
+    onImageChange?.(file, img.src);
   };
 
   return (
