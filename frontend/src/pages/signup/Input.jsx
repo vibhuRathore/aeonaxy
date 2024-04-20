@@ -1,7 +1,7 @@
 const Input = ({ name, label, error, type, value, onChange }) => {
   const isInvalid = typeof error === "string" && error !== "";
   const textColor = isInvalid ? "text-red-400" : "text-black";
-  const bgColor = isInvalid ? "bg-red-50" : "bg-slate-100";
+  const bgColor = isInvalid ? "bg-red-50" : "bg-stone-50";
 
   return (
     <div className={`flex flex-col w-full ${textColor}`}>

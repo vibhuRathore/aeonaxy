@@ -60,7 +60,7 @@ const Form = () => {
   };
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-2 grow" onSubmit={handleSubmit}>
       <div className="flex gap-2">
         <Input
           label="Name"
@@ -95,7 +95,7 @@ const Form = () => {
         value={password.value}
         onChange={(e) => setPassword({ ...password, value: e.target.value })}
       />
-      <Button text="Create Account" type="submit" className="self-start" />
+      <Button text="Create Account" type="submit" className="self-start mt-3" />
     </form>
   );
 };
