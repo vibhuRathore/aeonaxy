@@ -10,6 +10,7 @@ const router = createBrowserRouter([
   { path: "/get-started", element: <GetStarted /> },
   { path: "/choose-user-type", element: <UserTypeChoice /> },
   { path: "/confirm-email", element: <ConfirmEmail /> },
+  { path: "*", element: <Navigate to="/sign-up" replace /> },
 ]);
 
 export default router;

@@ -1,9 +1,18 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Email from "../../assets/email.png";
+import { useEffect } from "react";
 
 const ConfirmEmail = () => {
+  const navigate = useNavigate();
   const loc = useLocation();
   const { email } = loc.state || {};
+
+  useEffect(() => {
+    if (!loc.state) {
+      navigate("/sign-up", { replace: true });
+    }
+  }, []);
+
 
   return (
     <div className="flex flex-col items-center gap-4 mt-14">

@@ -3,7 +3,7 @@ import UserTypeBox from "./UserTypeBox";
 import Explore from "../../assets/explore.png";
 import Hire from "../../assets/hire.png";
 import Share from "../../assets/share.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import uploadImage from "../../api/uploadImage";
 import signUp from "../../api/signUp";
@@ -15,6 +15,12 @@ const UserTypeChoice = () => {
   const [isExplorer, setIsExplorer] = useState(false);
   const loc = useLocation();
   const { name, username, email, password, image, location } = loc.state || {};
+
+  useEffect(() => {
+    if (!loc.state) {
+      navigate("/sign-up", { replace: true });
+    }
+  }, []);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();

@@ -1,13 +1,19 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../Components/Button";
 import ImageUpload from "./ImageUpload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const GetStarted = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [userLocation, setUserLocation] = useState("");
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    if (!location.state) {
+      navigate("/sign-up", { replace: true });
+    }
+  }, []);
 
   const handleSubmit = () => {
     navigate("/choose-user-type", {
