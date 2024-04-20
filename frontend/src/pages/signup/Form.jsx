@@ -16,23 +16,30 @@ const Form = () => {
 
     const usernameRegex = /^[a-zA-Z0-9_.-]$/;
     const emailRegex = /[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/;
+
+    let isError = false;
     if (name.value === "") {
       setName({ ...name, error: "Name must not be empty" });
+      isError = true;
     }
 
     if (username.value === "") {
       setUsername({ ...username, error: "Username must not be empty" });
+      isError = true;
     } else if (usernameRegex.test(username.value)) {
       setUsername({
         ...username,
         error: "Username should contain letter, numbers, _, ., and -",
       });
+      isError = true;
     }
 
     if (email.value === "") {
       setEmail({ ...email, error: "Email must not be empty" });
+      isError = true;
     } else if (emailRegex.test(email)) {
       setEmail({ ...email, error: "Email must be valid" });
+      isError = true;
     }
 
     if (password.value.length < 8) {
@@ -40,14 +47,10 @@ const Form = () => {
         ...password,
         error: "Password must contain at least 8 characters",
       });
+      isError = true;
     }
 
-    if (
-      name.error === "" &&
-      username.error === "" &&
-      email.error === "" &&
-      password.error === ""
-    ) {
+    if (!isError) {
       navigate("/get-started", {
         state: {
           name: name.value,
