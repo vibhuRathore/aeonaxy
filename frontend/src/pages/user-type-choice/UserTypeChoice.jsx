@@ -5,9 +5,8 @@ import Hire from "../../assets/hire.png";
 import Share from "../../assets/share.png";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const { VITE_BACKEND_URL, VITE_CLOUDINARY_CLOUD, VITE_CLOUDINARY_API_KEY } =
-  import.meta.env;
+import uploadImage from "../../api/uploadImage";
+import signUp from "../../api/signUp";
 
 const UserTypeChoice = () => {
   const navigate = useNavigate();
@@ -17,94 +16,45 @@ const UserTypeChoice = () => {
   const loc = useLocation();
   const { name, username, email, password, image, location } = loc.state || {};
 
-  const handleImageUpload = async (imageFile) => {
-    const formData = new FormData();
-    formData.append("file", imageFile);
-    formData.append("cloud_name", VITE_CLOUDINARY_CLOUD);
-    formData.append("api_key", VITE_CLOUDINARY_API_KEY);
-    formData.append("upload_preset", "ml_default");
-
-    try {
-      const { secure_url, error } = await fetch(
-        "https:/api.cloudinary.com/v1_1/dnj1n96lz/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      ).then((res) => res.json());
-
-      if (error) {
-        console.error("Error in uploading image to cloud storage", err.message);
-        return "";
-      }
-
-      return secure_url;
-    } catch (err) {
-      console.error("Error in uploading image to cloud storage", err.message);
-      return "";
-    }
-  };
-
-  const signUp = async (image_url) => {
-    try {
-      const { success, data, error } = await fetch(
-        `${VITE_BACKEND_URL}/signup`,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            username,
-            email,
-            password,
-            image_url,
-            location,
-            user_type: []
-              .concat(isDesigner ? ["DESIGNER"] : [])
-              .concat(isRecruiter ? ["RECRUITER"] : [])
-              .concat(isExplorer ? ["EXPLORER"] : []),
-          }),
-        }
-      ).then((res) => res.json());
-
-      if (!success) {
-        console.error("Error in sign up api: ", error);
-        return false;
-      }
-      console.log("Confirmation mail sent: ", data);
-      return true;
-    } catch (err) {
-      console.error("Error in sign up api: ", err.message);
-      return false;
-    }
-  };
-
   const handleSubmit = (evt) => {
     evt.preventDefault();
     evt.stopPropagation();
 
     const signUpRequest = async () => {
-      const imageUrl = await handleImageUpload(image);
-      if (imageUrl === "") {
+      const image_url = await uploadImage(image);
+      if (image_url === "") {
         console.error("Image upload error");
         return false;
       }
-      const success = await signUp(imageUrl);
+      const user_type = []
+        .concat(isDesigner ? ["DESIGNER"] : [])
+        .concat(isRecruiter ? ["RECRUITER"] : [])
+        .concat(isExplorer ? ["EXPLORER"] : []);
+      const success = await signUp({
+        name,
+        username,
+        email,
+        password,
+        image_url,
+        location,
+        user_type,
+      });
       if (success) {
         console.log("create user success");
       } else {
         console.error("Create user error");
+        return false;
       }
+      return true;
     };
 
-    signUpRequest().then(() => {
-      navigate("/confirm-email", { state: { email } });
+    signUpRequest().then((success) => {
+      if (success) navigate("/confirm-email", { state: { email } });
     });
   };
 
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center gap-8 mt-14">
       <div className="text-center">
         <h3 className="text-3xl font-bold">What brings you to Dribble?</h3>
         <p className="text-slate-700">
