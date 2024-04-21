@@ -9,8 +9,11 @@ const uploadImage = async (imageFile) => {
 
   try {
     const { secure_url, error } = await fetch(
-      "https:/api.cloudinary.com/v1_1/dnj1n96lz/image/upload",
+      "https://api.cloudinary.com/v1_1/dnj1n96lz/image/upload",
       {
+        headers: {
+
+        },
         mode: "cors",
         method: "POST",
         body: formData,
