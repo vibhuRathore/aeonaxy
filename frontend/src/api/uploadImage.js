@@ -11,6 +11,7 @@ const uploadImage = async (imageFile) => {
     const { secure_url, error } = await fetch(
       "https:/api.cloudinary.com/v1_1/dnj1n96lz/image/upload",
       {
+        mode: "cors",
         method: "POST",
         body: formData,
       }
